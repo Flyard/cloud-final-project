@@ -11,7 +11,7 @@ const port = 3000;
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
-app.use("/todo", todoController);
+app.use("/todos", todoController);
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello World!");
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
-  console.log("Connected to Mongo Database");
+  console.log("Connected to Mongo CONTAINER Database");
   app.listen(port, () => {
     console.log(
       `API listening on port ${port}, visit http://localhost:${port}/`

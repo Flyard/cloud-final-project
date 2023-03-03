@@ -4,6 +4,9 @@
 const { findOneAndDelete, findByIdAndDelete } = require("./todo.model");
 const Todo = require("./todo.model");
 
+async function findAll() {
+  return Todo.find();
+}
 async function createOne(data) {
   const todo = new Todo();
   todo.name = data.name;
@@ -16,12 +19,10 @@ async function createOne(data) {
     return null;
   }
 }
-async function findAll() {
-  return Todo.find();
-}
+
 async function deleteOne(id) {
   try {
-    return findByIdAndDelete(id);
+    return Todo.findByIdAndDelete(id);
   } catch (err) {
     console.error(err);
     return null;
