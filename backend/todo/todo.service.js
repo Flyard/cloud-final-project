@@ -1,7 +1,7 @@
 /**
  * Service
  */
-const { findOneAndDelete, findByIdAndDelete } = require("./todo.model");
+
 const Todo = require("./todo.model");
 
 async function findAll() {
