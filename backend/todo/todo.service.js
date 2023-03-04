@@ -13,7 +13,8 @@ async function createOne(data) {
   todo.content = data.content;
   try {
     todo.save();
-    return console.log("todo created");
+    console.log("Todo added");
+    return todo;
   } catch (err) {
     console.error(err);
     return null;
