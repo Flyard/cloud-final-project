@@ -1,10 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import "./index.css"
+import CardList from "./components/cardList";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+
+
+
+        <React.StrictMode>
+            <body className="h-screen bg-slate-100	">
+                <CardList/>
+            </body>
+      </React.StrictMode>,
+
+
 )
