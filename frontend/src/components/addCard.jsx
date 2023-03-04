@@ -98,7 +98,6 @@ export default function AddCard() {
                       <button
                         type="submit"
                         className="rounded py-2 px-4 font-bold text-slate-700 shadow-lg hover:shadow"
-                        onClick={() => setShowModal(false)}
                       >
                         Add Task
                       </button>
