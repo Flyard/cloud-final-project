@@ -5,7 +5,7 @@ import CardList from "./components/cardList";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <body className="h-screen bg-slate-100	">
+    <body>
       <CardList />
     </body>
   </React.StrictMode>

@@ -54,7 +54,7 @@ export default function AddCard() {
       </button>
       {showModal ? (
         <>
-          <div className="absolute grid w-11/12 grid-cols-3 ">
+          <div className="absolute  mt-52 grid w-11/12 grid-cols-3">
             <div className="col-start-3 max-w-md overflow-y-auto overflow-x-hidden bg-transparent drop-shadow-md">
               <div className="relative flex w-full flex-col rounded-lg bg-slate-50 ">
                 <div className="flex rounded-t border-b border-solid border-slate-200 p-2">
