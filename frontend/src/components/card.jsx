@@ -1,37 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
-export default function Card() {
+export default function Card({ title, description, id }) {
   const [tasks, setTasks] = useState([]);
 
-  const fetchData = () => {
-    fetch("http://localhost:3000/todos/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+  const deleteData = (id) => {
+    fetch("http://localhost:3000/todos/" + id, {
+      method: "delete",
     })
-      .then(async (response) => response.json())
-      .then((data) => {
-        setTasks(data);
+      .then((response) => response.json())
+      .then(() => {
+        const updatedData = tasks.filter((task) => task._id !== id);
+        setTasks(updatedData);
+        console.log("The task has been deleted !");
       });
   };
 
-  useEffect(() => {
-    fetchData();
-  });
-
   return (
     <>
-      {tasks.map((task) => (
-        <>
-          <div className="m-2">
-            <div className="flex h-32 w-80 flex-col  overflow-scroll rounded-2xl bg-slate-50 pl-7 pt-5 drop-shadow-md">
-              <p className=" text-xl font-extrabold">{task.name}</p>
-              <p className="font-light">{task.content}</p>
-            </div>
+      <div className="m-2">
+        <div className="flex h-32 w-80 flex-col  overflow-scroll rounded-2xl bg-slate-50 px-7 py-5 drop-shadow-xl hover:drop-shadow-md">
+          <div className="flex justify-between">
+            <p className=" text-xl font-extrabold">{title}</p>
+            <button
+              className="opacity-10 transition-opacity duration-1000 ease-out hover:opacity-100"
+              type={"button"}
+              onClick={() => {
+                deleteData(id);
+                window.location.reload();
+              }}
+            >
+              <TrashIcon className=" h-5 w-5 "></TrashIcon>
+            </button>
           </div>
-        </>
-      ))}
+          <p className="font-light">{description}</p>
+        </div>
+      </div>
     </>
   );
 }
