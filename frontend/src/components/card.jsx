@@ -18,7 +18,7 @@ export default function Card({ title, description, id }) {
 
   return (
     <>
-      <div className="m-2">
+      <div className="my-5">
         <div className="flex h-32 w-80 flex-col  overflow-scroll rounded-2xl bg-slate-50 px-7 py-5 drop-shadow-xl hover:drop-shadow-md">
           <div className="flex justify-between">
             <p className=" text-xl font-extrabold">{title}</p>

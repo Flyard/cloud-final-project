@@ -44,15 +44,17 @@ export default function AddCard() {
 
   return (
     <>
-      <button className="m-2" type={"button"} onClick={openModal}>
-        <div className="flex h-32 w-80 flex-col justify-between rounded-2xl border-2 border-dashed border-slate-400">
-          <div className="m-auto pt-3">
-            <PlusCircleIcon className="ml-4 h-8 w-8 stroke-slate-400" />
-            <p className="text-slate-400"> Add Task</p>
+      <div className="fixed bottom-9 left-0 right-0 flex items-center justify-center">
+        <button className="mt-7" type={"button"} onClick={openModal}>
+          <div className="flex h-32 w-80 flex-col justify-between rounded-2xl border-2 border-dashed border-slate-400">
+            <div className="m-auto pt-3">
+              <PlusCircleIcon className="ml-4 h-8 w-8 stroke-slate-400" />
+              <p className="text-slate-400"> Add Task</p>
+            </div>
           </div>
-        </div>
-      </button>
-      {showModal ? (
+        </button>
+      </div>
+      {showModal === true ? (
         <>
           <div className="absolute  mt-52 grid w-11/12 grid-cols-3">
             <div className="col-start-3 max-w-md overflow-y-auto overflow-x-hidden bg-transparent drop-shadow-md">

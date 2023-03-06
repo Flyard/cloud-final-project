@@ -24,14 +24,18 @@ export default function CardList() {
   return (
     <>
       <div className="flex h-screen flex-col items-center pt-20">
-        <h1 className=" text-center text-6xl font-bold">TO-DO ! </h1>
-        {tasks.map((task) => (
-          <Card
-            title={task.name}
-            description={task.content}
-            id={task._id}
-          ></Card>
-        ))}
+        <h1 className=" mb-10 text-center text-6xl font-bold">TO-DO ! </h1>
+        <div className="snap-x">
+          <div className=" h-custom overflow-scroll px-10  ">
+            {tasks.map((task) => (
+              <Card
+                title={task.name}
+                description={task.content}
+                id={task._id}
+              ></Card>
+            ))}
+          </div>
+        </div>
 
         <AddCard></AddCard>
       </div>
