@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db:
+    image: mongo
+    restart: always
+    volumes:
+      - db-data:/data/db
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    volumes:
+      - .:/app/backend
+    environment:
+      - MONGO_URI=mongodb://root:root@localhost:27017/
+    ports:
+      - "9000:9000"
+    networks:
+      - app-network
+
+
+volumes:
+  db-data:
+
+networks:
+  app-network:
+    driver: bridge
