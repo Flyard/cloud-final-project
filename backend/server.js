@@ -23,7 +23,9 @@ app.get("/", (req, res) => {
 });
 
 async function main() {
-  await mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect(process.env.MONGO_URI).catch((err) => {
+    console.error(err);
+  });
   console.log("Connected to Mongo CONTAINER Database");
   app.listen(port, () => {
     console.log(

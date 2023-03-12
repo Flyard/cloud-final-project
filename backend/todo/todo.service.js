@@ -12,8 +12,9 @@ async function createOne(data) {
   todo.name = data.name;
   todo.content = data.content;
   try {
-    todo.save();
-    return console.log("todo created");
+    const createdTodo = await todo.save();
+    console.log("todo created");
+    return createdTodo;
   } catch (err) {
     console.error(err);
     return null;
