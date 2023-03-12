@@ -1,23 +1,37 @@
 version: '3'
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - '5173:5173'
+  db:
+    image: mongo
+    restart: always
+    volumes:
+      - db-data:/data/db
+    networks:
+      - app-network
+
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - '3000:3000'
-    depends_on:
-      - mongodb
+    build: ./backend
+    volumes:
+      - .:/app/backend
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/
-  mongodb:
-    image: 'mongo:latest'
+      - MONGO_URI=mongodb://db:27017/
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    
+  frontend:
+    build: ./frontend
+    volumes:
+      - .:/app/frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - app-network
 
+volumes:
+  db-data:
 
+networks:
+  app-network:
+    driver: bridge
