@@ -30,7 +30,7 @@ services:
       - app-network
     
   frontend:
-    build: ./frontend
+    image: flyard/todo-frontend
     depends_on: 
       - backend
     volumes:
