@@ -1,5 +1,5 @@
 # Description
-It is a simple TODO List. You cann **add** or **delete** a Todo.
+It is a simple TODO List. You can **add** or **delete** a Todo.
 
 # Prerequisites
 - Git
@@ -7,11 +7,25 @@ It is a simple TODO List. You cann **add** or **delete** a Todo.
 - Docker compose
 
 # Installation
-- Clone the repository on your computer using
-  `git clone git@github.com:Flyard/cloud-final-project.git`
-- Open a terminal, and go to the directory where you cloned the repository. 
-- Run the command: 
-  `docker-compose up -d --build`
-- Open your web browser, and enter `localhost:5173`. 
+- Clone the repository and go to the repository on your computer using </br>
 
+ ```
+# Clone this repository
+git clone git@github.com:Flyard/cloud-final-project.git 
+
+# Go into the repository
+cd cloud-final-project.git
+```
+
+- Run the command: </br>
+```
+docker-compose up -d --build
+ 
+# Or 
+ 
+docker-compose build 
+docker-compose up 
+  ```
+- Open your web browser, and enter
+[http://localhost:5173](http://localhost:5173)
 
