@@ -1,8 +1,10 @@
 version: '3'
 
 services:
+  #service for mongo
   db:
     image: mongo
+    # restart the container if it is already running
     restart: always
     volumes:
       - db-data:/data/db
@@ -10,18 +12,21 @@ services:
       - app-network
 
   backend:
-    build: ./backend
+    # fetching the image from my Docker Hub
+    image: flyard/todo-backend
     volumes:
       - .:/app/backend
+    # Link to connect to mongo
     environment:
       - MONGO_URI=mongodb://db:27017/
+    # Defining ports
     ports:
       - "3000:3000"
     networks:
       - app-network
     
   frontend:
-    build: ./frontend
+    image: flyard/todo-frontend
     volumes:
       - .:/app/frontend
     ports:
