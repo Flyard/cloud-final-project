@@ -24,7 +24,7 @@ docker-compose up -d --build
 # Or 
  
 docker-compose build 
-docker-compose up 
+docker-compose up -d 
   ```
 - Open your web browser, and enter
 [http://localhost:5173](http://localhost:5173)
