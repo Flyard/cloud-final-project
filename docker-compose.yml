@@ -3,9 +3,11 @@ version: '3'
 services:
   #service for mongo
   db:
+    # Pulling the image called "mongo"
     image: mongo
     # restart the container if it is already running
     restart: always
+    # defines a volume named db-data
     volumes:
       - db-data:/data/db
     networks:
@@ -14,8 +16,10 @@ services:
   backend:
     # fetching the image from my Docker Hub
     image: flyard/todo-backend
+    depends_on: 
+      - db
     volumes:
-      - .:/app/backend
+      - ./backend:/app/backend
     # Link to connect to mongo
     environment:
       - MONGO_URI=mongodb://db:27017/
@@ -26,14 +30,18 @@ services:
       - app-network
     
   frontend:
-    image: flyard/todo-frontend
+    build: ./frontend
+    depends_on: 
+      - backend
     volumes:
-      - .:/app/frontend
+    - type: bind
+      source: ./frontend/src/components/cardList.jsx
+      target: /app/src/components/cardList.jsx
     ports:
       - "5173:5173"
     networks:
       - app-network
-
+# Using volumes
 volumes:
   db-data:
 

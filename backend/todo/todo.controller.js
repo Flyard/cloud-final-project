@@ -17,4 +17,8 @@ router.delete("/:id", async (req, res) => {
   return res.status(200).send(await todoService.deleteOne(req.params.id));
 });
 
+router.get("/bind", async (req, res) => {
+  res.status(200).send("Hello World!");
+});
+
 module.exports = router;
