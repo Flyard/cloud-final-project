@@ -1,48 +1,62 @@
 version: '3'
-
+# Defining the services we will use for our app.
 services:
-  #service for mongo
+  # Service for mongo
   db:
     # Pulling the image called "mongo"
     image: mongo
-    # restart the container if it is already running
+    # Restart the container if it is already running
     restart: always
-    # defines a volume named db-data
+    # Defines a volume named db-data, that will use the data from /data/db to make the db persistent.
     volumes:
       - db-data:/data/db
+    # Using the network 'app-network'
     networks:
       - app-network
 
+  # Service for backend
   backend:
-    # fetching the image from my Docker Hub
+    # Fetching the image from Docker Hub
     image: flyard/todo-backend:multiArch
+    # db MUST be created before creating 'backend'
     depends_on: 
       - db
     # Link to connect to mongo
     environment:
       - MONGO_URI=mongodb://db:27017/
-    # Defining ports
+    # Defining host:container ports
     ports:
       - "3000:3000"
+    # Using the network 'app-network'
     networks:
       - app-network
     
+  # Service for frontend  
   frontend:
+    # Pulling the image from Docker Hub
     image: flyard/todo-frontend:multiArch
+    # backend MUST be created before creating 'frontend'
     depends_on: 
       - backend
+    # Defining a bind mount to link the main page component. When a change is made in cardList, the change will be made in the container too.
     volumes:
+      # Defines the type of volume we're using, here it's bind
     - type: bind
+      # Sets the HOST (source) directory: where the LOCAL file is the file.
       source: ./frontend/src/components/cardList.jsx
+      # Sets the CONTAINER (target) directory: where in the CONTAINER is the file.
       target: /app/src/components/cardList.jsx
+    # Defining host:container ports
     ports:
       - "5173:5173"
+    # Using the network 'app-network'
     networks:
       - app-network
-# Using volumes
+
+# Declaring the volumes used in the app.
 volumes:
   db-data:
-
+# Defining the network name (app-network) and the driver (here it's bridge)
 networks:
   app-network:
     driver: bridge
