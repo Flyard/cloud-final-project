@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Cloud Computing & Virtualisation</title>
+
+	<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+	<meta name="author" content="Hakim El Hattab">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+
+<body>
+
+<div class="reveal">
+
+	<!-- Any section element inside of this container is displayed as a slide -->
+	<div class="slides">
+		<section>
+
+			<h3>Cloud Computing & Virtualisation</h3>
+			<p>
+				<small>Sabine SUN </br>Florian RANAIVOSON</small></br></br>
+				<small>	March 2023</small>
+			</p>
+		</section>
+
+		<section>
+			<h2>Table of contents</h2>
+				<small style="text-align: left"> Our Project<br/>
+				 How ?<br/>
+				 Docker Hub<br/>
+				 GitHub<br/></small>
+
+		</section>
+
+		<section>
+			<h2> Our project</h2>
+			<video data-autoplay src="Video.mov"></video>
+
+		</section>
+
+		<!-- Example of nested vertical slides -->
+		<section>
+			<section >
+				<h2>Folder Structure</h2>
+		<small style="text-align: left">
+						cloud-final-project/<br/>
+						├── backend/<br/>
+						│   ├── todo/<br/>
+						│   └── Dockerfile<br/>
+						├── frontend/<br/>
+						│   ├── src/<br/>
+						│   └── Dockerfile<br/>
+						├── docker-compose.yml<br/>
+						└── README.md<br/>
+		</small>
+			</section>
+			<section>
+				<h2>Backend</h2>
+				<pre><code  data-trim data-line-numbers="|1-2|3-4|5-6|7-8|9-10|11-12|13-14|">
+						# Base image
+						FROM node:14.17-alpine
+						# Set working directory
+						WORKDIR /app
+						# Copy package.json
+						COPY package*.json ./
+						# Install dependencies
+						RUN npm install
+						# Copy source code
+						COPY . .
+						# Expose port 3000
+						EXPOSE 3000
+						# Start the application
+						CMD ["npm", "start"]
+					</code></pre>
+			</section>
+			<section>
+				<h2>Frontend</h2>
+				<pre><code  data-trim data-line-numbers>
+						# Base image
+						FROM node:14.17-alpine
+						# Set working directory
+						WORKDIR /app
+						# Copy package.json and package-lock.json files
+						COPY package*.json ./
+						# Install dependencies
+						RUN npm install
+						# Copy source code
+						COPY . .
+						# Expose port 5173
+						EXPOSE 5173
+						# Start the application
+						CMD ["npm", "run", "dev"]
+				</code></pre>
+			</section>
+			<section>
+				<h2>docker-compose</h2>
+				<pre><code data-trim data-line-numbers="|1|13-18|24-34|40-45|3-5,18-20,35-36,46-49|7-9,21-22,37-38,50-51">
+					version: '3'
+
+					# Using volumes
+					volumes:
+						  db-data:
+
+					networks:
+					 	 app-network:
+							driver: bridge
+
+					services:
+						#service for mongo
+						db:
+							# Pulling the image called "mongo"
+							image: mongo
+							# restart the container if it is already running
+							restart: always
+							# defines a volume named db-data
+							volumes:
+								- db-data:/data/db
+							networks:
+								- app-network
+
+						backend:
+							# fetching the image from my Docker Hub
+							image: flyard/todo-backend
+							depends_on:
+								- db
+							# Link to connect to mongo
+							environment:
+								- MONGO_URI=mongodb://db:27017/
+							# Defining ports
+							ports:
+								- "3000:3000"
+							volumes:
+								- ./backend:/app/backend
+							networks:
+								- app-network
+
+						frontend:
+							image: flyard/todo-frontend
+							depends_on:
+								- backend
+							ports:
+								- "5173:5173"
+							volumes:
+								- type: bind
+								  source: ./frontend/src/components/cardList.jsx
+								  target: /app/src/components/cardList.jsx
+							networks:
+								- app-network
+
+				</code></pre>
+			</section>
+		</section>
+
+		<section>
+			<h2>Run</h2>
+			<pre><code  data-trim data-line-numbers="|1|2|">
+				docker-compose build
+				docker-compose up
+			</code></pre>
+			ou
+			<pre><code  data-trim data-line-numbers>
+				docker-compose up -d --build
+			</code></pre>
+		</section>
+
+		<section>
+			<section>
+			<h2>Docker hub</h2>
+			<pre><code  data-trim data-line-numbers>
+				docker tag backend flyard/todo-backend
+				docker tag frontend flyard/todo-frontend
+
+				docker push flyard/todo-backend
+				docker push flyard/todo-frontend
+			</code></pre>
+			</section>
+			<section>
+				<h2>Docker hub</h2>
+					<img class="fragment" src="/flyard:todo-backend.png">
+					<img class="fragment" src="/flyard:todo-frontend.png">
+				<small>
+					Here is our links for our Docker Hub public repository : <br/>
+					<a href="https://hub.docker.com/repository/docker/flyard/todo-backend/general">the backend</a><br/>
+
+					<a href="https://hub.docker.com/repository/docker/flyard/todo-frontend/general">the frontend</a>
+				</small>
+			</section>
+		</section>
+		<section data-markdown>
+		  <textarea data-template>
+			## GitHub
+			Here is our [repository](https://github.com/Flyard/cloud-final-project).
+		  </textarea>
+		</section>
+		<section>
+			<h2>Thank you</h2><br/>
+			<h2>Any Questions ? </h2>
+		</section>
+
+
+	</div>
+
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/zoom/zoom.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/search/search.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+
+	// Also available as an ES module, see:
+	// https://revealjs.com/initialization/
+	Reveal.initialize({
+		controls: true,
+		progress: true,
+		center: true,
+		hash: true,
+
+		// Learn about plugins: https://revealjs.com/plugins/
+		plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+	});
+
+</script>
+
+</body>
+</html>
