@@ -29,3 +29,12 @@ docker-compose up -d
 - Open your web browser, and enter
 [http://localhost:5173](http://localhost:5173)
 
+# Presentation 
+
+You can run the presentation about the project 
+
+ ```
+cd reveal.js 
+npm start
+```
+
