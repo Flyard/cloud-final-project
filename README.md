@@ -35,6 +35,7 @@ You can run the presentation about the project
 
  ```
 cd reveal.js 
+npm install 
 npm start
 ```
 
