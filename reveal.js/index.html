@@ -179,11 +179,6 @@
 
 		<section>
 			<h2>Run</h2>
-			<pre><code  data-trim data-line-numbers="|1|2|">
-				docker-compose build
-				docker-compose up
-			</code></pre>
-			ou
 			<pre><code  data-trim data-line-numbers>
 				docker-compose up -d --build
 			</code></pre>
@@ -193,11 +188,11 @@
 			<section>
 			<h2>Docker hub</h2>
 			<pre><code  data-trim data-line-numbers>
-				docker tag backend flyard/todo-backend
-				docker tag frontend flyard/todo-frontend
+				docker tag backend flyard/todo-backend:multiArch
+				docker tag frontend flyard/todo-frontend:multArch
 
-				docker push flyard/todo-backend
-				docker push flyard/todo-frontend
+				docker push flyard/todo-backend:multiArch
+				docker push flyard/todo-frontend:multiArch
 			</code></pre>
 			</section>
 			<section>
