@@ -68,99 +68,111 @@
 						└── README.md<br/>
 		</small>
 			</section>
+
 			<section>
 				<h2>Backend</h2>
-				<pre><code  data-trim data-line-numbers="|1-2|3-4|5-6|7-8|9-10|11-12|13-14|">
-						# Base image
-						FROM node:14.17-alpine
-						# Set working directory
+				<pre><code  data-trim data-line-numbers="|1-2|3-5|6-7|8-9|10-11|12-13|14-15|">
+						# Base image for the build that we are using
+						FROM node:19-alpine
+						# Set working directory to /app
+						# Docker will use this path for all the following commands
 						WORKDIR /app
-						# Copy package.json
+						# Copy package.json and package-lock.json in /app
 						COPY package*.json ./
-						# Install dependencies
+						# Run the command "npm install" inside of the container
 						RUN npm install
-						# Copy source code
+						# Copy all files from the host machine to the workdir
 						COPY . .
 						# Expose port 3000
 						EXPOSE 3000
-						# Start the application
+						# Set the command "npm start" that start the application
 						CMD ["npm", "start"]
-					</code></pre>
+				</code></pre>
 			</section>
 			<section>
 				<h2>Frontend</h2>
-				<pre><code  data-trim data-line-numbers>
-						# Base image
-						FROM node:14.17-alpine
+				<pre><code  data-trim data-line-numbers="|11-12|13-14|">
+						# Base image that we are using for the application
+						FROM node:18-alpine
 						# Set working directory
 						WORKDIR /app
-						# Copy package.json and package-lock.json files
+						# Copy package.json and package-lock.json in the current workdir
 						COPY package*.json ./
 						# Install dependencies
 						RUN npm install
-						# Copy source code
+						# Copy all files from the host machine to the workdir
 						COPY . .
 						# Expose port 5173
 						EXPOSE 5173
-						# Start the application
+						# Set the command "npm run dev" that start the application
 						CMD ["npm", "run", "dev"]
 				</code></pre>
 			</section>
 			<section>
 				<h2>docker-compose</h2>
-				<pre><code data-trim data-line-numbers="|1|13-18|24-34|40-45|3-5,18-20,35-36,46-49|7-9,21-22,37-38,50-51">
+				<pre><code data-trim data-line-numbers="|2-3|4-9|17-29|34-43|56-58,10-12,45-51|59-62,13-15,30-32,52-54">
 					version: '3'
-
-					# Using volumes
-					volumes:
-						  db-data:
-
-					networks:
-					 	 app-network:
-							driver: bridge
-
+					# Defining the services we will use for our app.
 					services:
-						#service for mongo
+						# Service for mongo
 						db:
 							# Pulling the image called "mongo"
 							image: mongo
-							# restart the container if it is already running
+							# Restart the container if it is already running
 							restart: always
-							# defines a volume named db-data
+							# Defines a volume named db-data, that will use the data from /data/db to make the db persistent.
 							volumes:
 								- db-data:/data/db
+							# Using the network 'app-network'
 							networks:
 								- app-network
 
+						# Service for backend
 						backend:
-							# fetching the image from my Docker Hub
-							image: flyard/todo-backend
+							# Fetching the image from Docker Hub
+							image: flyard/todo-backend:multiArch
+							# db MUST be created before creating 'backend'
 							depends_on:
 								- db
 							# Link to connect to mongo
 							environment:
 								- MONGO_URI=mongodb://db:27017/
-							# Defining ports
+							# Defining host:container ports
 							ports:
 								- "3000:3000"
-							volumes:
-								- ./backend:/app/backend
+							# Using the network 'app-network'
 							networks:
 								- app-network
 
+						# Service for frontend
 						frontend:
-							image: flyard/todo-frontend
+							# Pulling the image from Docker Hub
+							image: flyard/todo-frontend:multiArch
+							# backend MUST be created before creating 'frontend'
 							depends_on:
 								- backend
+							# Defining host:container ports
 							ports:
 								- "5173:5173"
+							# Defining a bind mount to link the main page component. When a change is made in cardList, the change will be made in the container too.
 							volumes:
+								# Defines the type of volume we're using, here it's bind
 								- type: bind
-								  source: ./frontend/src/components/cardList.jsx
-								  target: /app/src/components/cardList.jsx
+								# Sets the HOST (source) directory: where the LOCAL file is the file.
+								source: ./frontend/src/components/cardList.jsx
+								# Sets the CONTAINER (target) directory: where in the CONTAINER is the file.
+								target: /app/src/components/cardList.jsx
+							# Using the network 'app-network'
 							networks:
 								- app-network
 
+					# Declaring the volumes used in the app.
+					volumes:
+						db-data:
+					# Defining the network name (app-network) and the driver (here it's bridge)
+					networks:
+						app-network:
+						driver: bridge
 				</code></pre>
 			</section>
 		</section>
@@ -190,14 +202,15 @@
 			</section>
 			<section>
 				<h2>Docker hub</h2>
-					<img class="fragment" src="/flyard:todo-backend.png">
-					<img class="fragment" src="/flyard:todo-frontend.png">
-				<small>
-					Here is our links for our Docker Hub public repository : <br/>
-					<a href="https://hub.docker.com/repository/docker/flyard/todo-backend/general">the backend</a><br/>
-
-					<a href="https://hub.docker.com/repository/docker/flyard/todo-frontend/general">the frontend</a>
+				<small> Here is our links for our Docker Hub public repository : </small><br/>
+				<small style="text-align: left">
+					<a href="https://hub.docker.com/repository/docker/flyard/todo-backend/general">- the backend</a><br/>
+					<img class="fragment" src="./flyard:todo-backend.png"><br/>
+					<a href="https://hub.docker.com/repository/docker/flyard/todo-frontend/general">- the frontend</a>
+					<img class="fragment" src="./flyard:todo-frontend.png">
 				</small>
+
+
 			</section>
 		</section>
 		<section data-markdown>

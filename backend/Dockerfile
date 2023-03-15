@@ -1,20 +1,15 @@
-# Base image
+# Base image for the build that we are using
 FROM node:19-alpine
-
-# Set working directory
+# Set working directory to /app
+# Docker will use this path for all the following commands
 WORKDIR /app
-
-# Copy package.json and package-lock.json files
+# Copy package.json and package-lock.json in /app
 COPY package*.json ./
-
-# Install dependencies
+# Run the command "npm install" inside of the container
 RUN npm install
-
-# Copy source code
+# Copy all files from the host machine to the workdir
 COPY . .
-
 # Expose port 3000
 EXPOSE 3000
-
-# Start the application
+# Set the command "npm start" that start the application
 CMD ["npm", "start"]

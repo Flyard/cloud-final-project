@@ -1,23 +1,14 @@
-# Base image
-FROM node:19-alpine
-
+# Base image that we are using for the application
+FROM node:18-alpine
 # Set working directory
 WORKDIR /app
-
-# Copy package.json and package-lock.json files
+# Copy package.json and package-lock.json in the current workdir
 COPY package*.json ./
-
 # Install dependencies
 RUN npm install
-
-# Copy source code
+# Copy all files from the host machine to the workdir
 COPY . .
-
-# Build the application
-# RUN npm run build
-
 # Expose port 5173
 EXPOSE 5173
-
-# Start the application
+# Set the command "npm run dev" that start the application
 CMD ["npm", "run", "dev"]
