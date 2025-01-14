@@ -30,8 +30,13 @@ async function deleteOne(id) {
   }
 }
 
+function sum(a, b) {
+  return a + b;
+}
+
 module.exports = {
   createOne,
   findAll,
   deleteOne,
+  sum
 };
