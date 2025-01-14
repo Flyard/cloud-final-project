@@ -24,7 +24,7 @@ export default function AddCard() {
   };
 
   const addToDo = () => {
-    fetch("http://localhost:3000/todos/", {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/todos/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

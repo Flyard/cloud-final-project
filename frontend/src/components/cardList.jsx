@@ -5,7 +5,7 @@ import AddCard from "./addCard";
 export default function CardList() {
   const [tasks, setTasks] = useState([]);
   const fetchData = () => {
-    fetch("http://localhost:3000/todos/", {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/todos/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

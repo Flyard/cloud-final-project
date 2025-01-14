@@ -5,7 +5,7 @@ export default function Card({ title, description, id }) {
   const [tasks, setTasks] = useState([]);
 
   const deleteData = (id) => {
-    fetch("http://localhost:3000/todos/" + id, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/todos/${id}`, {
       method: "delete",
     })
       .then((response) => response.json())
